@@ -56,7 +56,7 @@
         dx *= Math.cos(angle); // 角度に基づいてx方向の速度を設定
         dy *= Math.sin(angle); // 角度に基づいてy方向の速度を設定
         var paddleHeight = 10;
-        var paddleWidth = 75;
+        var paddleWidth = 100;
         var paddleX = (canvas.width - paddleWidth) / 2;
         var rightPressed = false;
         var leftPressed = false;
@@ -88,28 +88,6 @@
         canvas.addEventListener("mousedown", mouseDownHandler, false);
         // canvas.addEventListener("mousemove", mouseMoveHandler, false);
         canvas.addEventListener("mouseup", mouseUpHandler, false);
-
-        // // button
-        // document
-        //   .querySelector(".left-button")
-        //   .addEventListener("click", movePaddleLeft);
-        // document
-        //   .querySelector(".right-button")
-        //   .addEventListener("click", movePaddleRight);
-        var movePaddleLeft = function () {
-          leftPressed = true;
-        };
-
-        var movePaddleRight = function () {
-          alert();
-          rightPressed = true;
-          alert();
-        };
-
-        var stopMoving = function () {
-          leftPressed = false;
-          rightPressed = false;
-        };
 
         // マウスイベントの処理
         function mouseDownHandler(e) {
@@ -233,7 +211,7 @@
               var collisionPoint = x - (paddleX + paddleWidth / 2);
               var speed = Math.sqrt(dx * dx + dy * dy);
               var angle =
-                (-(collisionPoint / (paddleWidth / 2)) * Math.PI) / 3 +
+                (-(collisionPoint / (paddleWidth / 2)) * Math.PI) / 2.5 +
                 Math.PI / 2; // 角度を変更
               dx = speed * Math.cos(angle); // 速度を一定に保ちつつx方向の速度を更新
               dy = -speed * Math.sin(angle); // y方向の速度を更新
@@ -340,7 +318,7 @@
       <canvas id="myCanvas" width="480" height="320"></canvas>
       <div class="button-container"></div>
     </div>
-    <p>ver 0.10 angle</p>
+    <p>ver 0.11 barsize</p>
     <audio id="breakSound" src="don.mp3" preload="auto"></audio>
   </body>
 </html>
