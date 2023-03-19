@@ -58,6 +58,34 @@
           var rect = canvas.getBoundingClientRect();
           var mouseX = e.clientX - rect.left;
 
+          if (mouseX > paddleX) {
+            rightPressed = true;
+            leftPressed = false;
+          } else {
+            leftPressed = true;
+            rightPressed = false;
+          }
+        }
+
+        function touchStartHandler(e) {
+          e.preventDefault();
+          var rect = canvas.getBoundingClientRect();
+          var touchX = e.touches[0].clientX - rect.left;
+
+          if (touchX > paddleX) {
+            rightPressed = true;
+            leftPressed = false;
+          } else {
+            leftPressed = true;
+            rightPressed = false;
+          }
+        }
+
+        function mouseDownHandler(e) {
+          e.preventDefault();
+          var rect = canvas.getBoundingClientRect();
+          var mouseX = e.clientX - rect.left;
+
           if (mouseX > paddleX + paddleWidth / 2 && mouseX <= canvas.width) {
             rightPressed = true;
             leftPressed = false;
@@ -228,11 +256,7 @@
   </head>
   <body>
     <canvas id="myCanvas" width="480" height="320"></canvas>
-    <p>ver 0.07 add touch</p>
-    <audio
-      id="breakSound"
-      src="path/to/your/sound-file.mp3"
-      preload="auto"
-    ></audio>
+    <p>ver 0.08 don</p>
+    <audio id="breakSound" src="don.mp3" preload="auto"></audio>
   </body>
 </html>

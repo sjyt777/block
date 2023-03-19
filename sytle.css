@@ -1,0 +1,40 @@
+canvas {
+  display: block;
+  margin: auto;
+  background-color: #f0f0f0;
+  border: 1px solid #000;
+}
+.game-container {
+  position: relative;
+  width: 80vw;
+  height: 80vh;
+  margin: auto;
+}
+
+.button-container {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.left-button,
+.right-button {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  background-color: #0095dd;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  margin: 8px;
+  cursor: pointer;
+}
+
+.left-button:hover,
+.right-button:hover {
+  background-color: #0077aa;
+}
