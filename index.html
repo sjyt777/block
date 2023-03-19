@@ -44,8 +44,9 @@
         document.addEventListener("keyup", keyUpHandler, false);
 
         // タップイベントリスナーを追加
-
-        canvas.addEventListener("touchstart", touchHandler, false);
+        canvas.addEventListener("touchstart", touchStartHandler, false);
+        canvas.addEventListener("touchmove", touchMoveHandler, false);
+        canvas.addEventListener("touchend", touchEndHandler, false);
 
         function keyDownHandler(e) {
           if (e.key == "Right" || e.key == "ArrowRight") {
@@ -64,10 +65,7 @@
         }
 
         // タップイベントの処理
-        var touchX;
-
-        // タップイベントの処理
-        function touchHandler(e) {
+        function touchStartHandler(e) {
           e.preventDefault();
           var touch = e.touches[0];
           var touchX = touch.clientX;
@@ -77,40 +75,37 @@
 
           if (touchX < middleX) {
             // 画面左側がタップされた場合、パドルを左に移動
-            if (paddleX > 0) {
-              paddleX -= 7;
-            }
+            leftPressed = true;
           } else {
             // 画面右側がタップされた場合、パドルを右に移動
-            if (paddleX < canvas.width - paddleWidth) {
-              paddleX += 7;
-            }
+            rightPressed = true;
           }
         }
 
-        // function touchStartHandler(e) {
-        //   e.preventDefault();
-        //   var touch = e.touches[0];
-        //   touchX = touch.clientX;
-        // }
+        function touchMoveHandler(e) {
+          e.preventDefault();
+          var touch = e.touches[0];
+          var touchX = touch.clientX;
 
-        // function touchMoveHandler(e) {
-        //   e.preventDefault();
-        //   var touch = e.touches[0];
-        //   var deltaX = touch.clientX - touchX;
-        //   touchX = touch.clientX;
+          // 画面の中央位置を取得
+          var middleX = canvas.width / 2;
 
-        //   paddleX += deltaX;
-        //   if (paddleX < 0) {
-        //     paddleX = 0;
-        //   } else if (paddleX > canvas.width - paddleWidth) {
-        //     paddleX = canvas.width - paddleWidth;
-        //   }
-        // }
+          if (touchX < middleX) {
+            // 画面左側がタップされた場合、パドルを左に移動
+            leftPressed = true;
+            rightPressed = false;
+          } else {
+            // 画面右側がタップされた場合、パドルを右に移動
+            rightPressed = true;
+            leftPressed = false;
+          }
+        }
 
-        // function touchEndHandler(e) {
-        //   e.preventDefault();
-        // }
+        function touchEndHandler(e) {
+          e.preventDefault();
+          leftPressed = false;
+          rightPressed = false;
+        }
 
         function collisionDetection() {
           for (var c = 0; c < brickColumnCount; c++) {
@@ -223,7 +218,7 @@
   </head>
   <body>
     <canvas id="myCanvas" width="480" height="320"></canvas>
-    <p>ver 0.03</p>
+    <p>ver 0.04 touch</p>
     <audio
       id="breakSound"
       src="path/to/your/sound-file.mp3"
