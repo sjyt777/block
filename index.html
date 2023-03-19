@@ -50,8 +50,11 @@
         var ballRadius = 10;
         var x = canvas.width / 2;
         var y = canvas.height - 30;
-        var dx = 2;
-        var dy = -2;
+        var dx = 5; // x方向の速度
+        var dy = -5; // y方向の速度
+        var angle = (Math.random() * Math.PI) / 2 + Math.PI / 4; // ランダムに角度を設定
+        dx *= Math.cos(angle); // 角度に基づいてx方向の速度を設定
+        dy *= Math.sin(angle); // 角度に基づいてy方向の速度を設定
         var paddleHeight = 10;
         var paddleWidth = 75;
         var paddleX = (canvas.width - paddleWidth) / 2;
@@ -193,17 +196,18 @@
           leftPressed = false;
           rightPressed = false;
         }
-
         function collisionDetection() {
           for (var c = 0; c < brickColumnCount; c++) {
             for (var r = 0; r < brickRowCount; r++) {
               var b = bricks[c][r];
               if (b.status == 1) {
+                var brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
+                var brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
                 if (
-                  x > b.x &&
-                  x < b.x + brickWidth &&
-                  y > b.y &&
-                  y < b.y + brickHeight
+                  x > brickX &&
+                  x < brickX + brickWidth &&
+                  y > brickY &&
+                  y < brickY + brickHeight
                 ) {
                   dy = -dy;
                   b.status = 0;
@@ -216,6 +220,27 @@
                   }
                 }
               }
+            }
+          }
+          if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+            dx = -dx;
+          }
+
+          if (y + dy < ballRadius) {
+            dy = -dy;
+          } else if (y + dy > canvas.height - ballRadius) {
+            if (x > paddleX && x < paddleX + paddleWidth) {
+              var collisionPoint = x - (paddleX + paddleWidth / 2);
+              var speed = Math.sqrt(dx * dx + dy * dy);
+              var angle =
+                (-(collisionPoint / (paddleWidth / 2)) * Math.PI) / 3 +
+                Math.PI / 2; // 角度を変更
+              dx = speed * Math.cos(angle); // 速度を一定に保ちつつx方向の速度を更新
+              dy = -speed * Math.sin(angle); // y方向の速度を更新
+            } else {
+              alert("GAME OVER");
+              document.location.reload();
+              dx = dy = 0;
             }
           }
         }
@@ -277,7 +302,7 @@
           drawBall();
           drawPaddle();
           drawScore();
-          drawDebugInfo(); // デバッグ情報を表示
+          // drawDebugInfo(); // デバッグ情報を表示
           collisionDetection();
 
           if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
@@ -315,7 +340,7 @@
       <canvas id="myCanvas" width="480" height="320"></canvas>
       <div class="button-container"></div>
     </div>
-    <p>ver 0.09 conntenaだけ</p>
+    <p>ver 0.10 angle</p>
     <audio id="breakSound" src="don.mp3" preload="auto"></audio>
   </body>
 </html>
