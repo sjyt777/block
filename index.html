@@ -43,10 +43,54 @@
         document.addEventListener("keydown", keyDownHandler, false);
         document.addEventListener("keyup", keyUpHandler, false);
 
-        // タップイベントリスナーを追加
-        canvas.addEventListener("touchstart", touchStartHandler, false);
-        canvas.addEventListener("touchmove", touchMoveHandler, false);
-        canvas.addEventListener("touchend", touchEndHandler, false);
+        // // タップイベントリスナーを追加
+        // canvas.addEventListener("touchstart", touchStartHandler, false);
+        // canvas.addEventListener("touchmove", touchMoveHandler, false);
+        // canvas.addEventListener("touchend", touchEndHandler, false);
+
+        // マウスイベントリスナーを追加
+        canvas.addEventListener("mousedown", mouseDownHandler, false);
+        // canvas.addEventListener("mousemove", mouseMoveHandler, false);
+        canvas.addEventListener("mouseup", mouseUpHandler, false);
+
+        // マウスイベントの処理
+        function mouseDownHandler(e) {
+          e.preventDefault();
+          var rect = canvas.getBoundingClientRect();
+          var mouseX = e.clientX - rect.left;
+
+          if (mouseX > paddleX + paddleWidth / 2 && mouseX <= canvas.width) {
+            rightPressed = true;
+            leftPressed = false;
+          } else if (mouseX >= 0 && mouseX < paddleX + paddleWidth / 2) {
+            leftPressed = true;
+            rightPressed = false;
+          }
+        }
+
+        // function mouseMoveHandler(e) {
+        //   var rect = canvas.getBoundingClientRect();
+        //   var mouseX = e.clientX - rect.left;
+
+        //   if (e.buttons === 1) {
+        //     if (mouseX > paddleX + paddleWidth / 2 && mouseX <= canvas.width) {
+        //       rightPressed = true;
+        //       leftPressed = false;
+        //     } else if (mouseX >= 0 && mouseX < paddleX + paddleWidth / 2) {
+        //       leftPressed = true;
+        //       rightPressed = false;
+        //     }
+        //   } else {
+        //     leftPressed = false;
+        //     rightPressed = false;
+        //   }
+        // }
+
+        function mouseUpHandler(e) {
+          e.preventDefault();
+          leftPressed = false;
+          rightPressed = false;
+        }
 
         function keyDownHandler(e) {
           if (e.key == "Right" || e.key == "ArrowRight") {
@@ -177,6 +221,12 @@
           ctx.fillStyle = "#0095DD";
           ctx.fillText("Score: " + score, 8, 20);
         }
+        function drawDebugInfo() {
+          ctx.font = "16px Arial";
+          ctx.fillStyle = "#0095DD";
+          ctx.fillText("Left Pressed: " + leftPressed, 8, 40);
+          ctx.fillText("Right Pressed: " + rightPressed, 8, 60);
+        }
 
         function draw() {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -184,6 +234,7 @@
           drawBall();
           drawPaddle();
           drawScore();
+          drawDebugInfo(); // デバッグ情報を表示
           collisionDetection();
 
           if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
@@ -218,7 +269,7 @@
   </head>
   <body>
     <canvas id="myCanvas" width="480" height="320"></canvas>
-    <p>ver 0.04 touch</p>
+    <p>ver 0.06 mouse left right</p>
     <audio
       id="breakSound"
       src="path/to/your/sound-file.mp3"
