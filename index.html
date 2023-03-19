@@ -44,9 +44,8 @@
         document.addEventListener("keyup", keyUpHandler, false);
 
         // // タップイベントリスナーを追加
-        // canvas.addEventListener("touchstart", touchStartHandler, false);
-        // canvas.addEventListener("touchmove", touchMoveHandler, false);
-        // canvas.addEventListener("touchend", touchEndHandler, false);
+        canvas.addEventListener("touchstart", touchStartHandler, false);
+        canvas.addEventListener("touchend", touchEndHandler, false);
 
         // マウスイベントリスナーを追加
         canvas.addEventListener("mousedown", mouseDownHandler, false);
@@ -67,24 +66,6 @@
             rightPressed = false;
           }
         }
-
-        // function mouseMoveHandler(e) {
-        //   var rect = canvas.getBoundingClientRect();
-        //   var mouseX = e.clientX - rect.left;
-
-        //   if (e.buttons === 1) {
-        //     if (mouseX > paddleX + paddleWidth / 2 && mouseX <= canvas.width) {
-        //       rightPressed = true;
-        //       leftPressed = false;
-        //     } else if (mouseX >= 0 && mouseX < paddleX + paddleWidth / 2) {
-        //       leftPressed = true;
-        //       rightPressed = false;
-        //     }
-        //   } else {
-        //     leftPressed = false;
-        //     rightPressed = false;
-        //   }
-        // }
 
         function mouseUpHandler(e) {
           e.preventDefault();
@@ -111,37 +92,15 @@
         // タップイベントの処理
         function touchStartHandler(e) {
           e.preventDefault();
-          var touch = e.touches[0];
-          var touchX = touch.clientX;
+          var rect = canvas.getBoundingClientRect();
+          var touchX = e.touches[0].clientX - rect.left;
 
-          // 画面の中央位置を取得
-          var middleX = canvas.width / 2;
-
-          if (touchX < middleX) {
-            // 画面左側がタップされた場合、パドルを左に移動
-            leftPressed = true;
-          } else {
-            // 画面右側がタップされた場合、パドルを右に移動
-            rightPressed = true;
-          }
-        }
-
-        function touchMoveHandler(e) {
-          e.preventDefault();
-          var touch = e.touches[0];
-          var touchX = touch.clientX;
-
-          // 画面の中央位置を取得
-          var middleX = canvas.width / 2;
-
-          if (touchX < middleX) {
-            // 画面左側がタップされた場合、パドルを左に移動
-            leftPressed = true;
-            rightPressed = false;
-          } else {
-            // 画面右側がタップされた場合、パドルを右に移動
+          if (touchX > paddleX + paddleWidth / 2 && touchX <= canvas.width) {
             rightPressed = true;
             leftPressed = false;
+          } else if (touchX >= 0 && touchX < paddleX + paddleWidth / 2) {
+            leftPressed = true;
+            rightPressed = false;
           }
         }
 
@@ -269,7 +228,7 @@
   </head>
   <body>
     <canvas id="myCanvas" width="480" height="320"></canvas>
-    <p>ver 0.06 mouse left right</p>
+    <p>ver 0.07 add touch</p>
     <audio
       id="breakSound"
       src="path/to/your/sound-file.mp3"
