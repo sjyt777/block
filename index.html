@@ -43,6 +43,10 @@
         document.addEventListener("keydown", keyDownHandler, false);
         document.addEventListener("keyup", keyUpHandler, false);
 
+        // タップイベントリスナーを追加
+
+        canvas.addEventListener("touchstart", touchHandler, false);
+
         function keyDownHandler(e) {
           if (e.key == "Right" || e.key == "ArrowRight") {
             rightPressed = true;
@@ -58,6 +62,55 @@
             leftPressed = false;
           }
         }
+
+        // タップイベントの処理
+        var touchX;
+
+        // タップイベントの処理
+        function touchHandler(e) {
+          e.preventDefault();
+          var touch = e.touches[0];
+          var touchX = touch.clientX;
+
+          // 画面の中央位置を取得
+          var middleX = canvas.width / 2;
+
+          if (touchX < middleX) {
+            // 画面左側がタップされた場合、パドルを左に移動
+            if (paddleX > 0) {
+              paddleX -= 7;
+            }
+          } else {
+            // 画面右側がタップされた場合、パドルを右に移動
+            if (paddleX < canvas.width - paddleWidth) {
+              paddleX += 7;
+            }
+          }
+        }
+
+        // function touchStartHandler(e) {
+        //   e.preventDefault();
+        //   var touch = e.touches[0];
+        //   touchX = touch.clientX;
+        // }
+
+        // function touchMoveHandler(e) {
+        //   e.preventDefault();
+        //   var touch = e.touches[0];
+        //   var deltaX = touch.clientX - touchX;
+        //   touchX = touch.clientX;
+
+        //   paddleX += deltaX;
+        //   if (paddleX < 0) {
+        //     paddleX = 0;
+        //   } else if (paddleX > canvas.width - paddleWidth) {
+        //     paddleX = canvas.width - paddleWidth;
+        //   }
+        // }
+
+        // function touchEndHandler(e) {
+        //   e.preventDefault();
+        // }
 
         function collisionDetection() {
           for (var c = 0; c < brickColumnCount; c++) {
@@ -170,6 +223,7 @@
   </head>
   <body>
     <canvas id="myCanvas" width="480" height="320"></canvas>
+    <p>ver 0.03</p>
     <audio
       id="breakSound"
       src="path/to/your/sound-file.mp3"
